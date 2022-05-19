@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/harleylara/tello-js",
   "dependencies": {
-    "stack-trace": "^1.0.0-pre1",
     "ws": "^8.6.0"
   }
 }
