@@ -1,0 +1,30 @@
+{
+  "name": "@harleylara/tello-js",
+  "version": "1.0.3",
+  "description": "Javascript library to program Tello Drones.",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harleylara/tello-js.git"
+  },
+  "keywords": [
+    "tello",
+    "drone",
+    "ryze",
+    "dji"
+  ],
+  "author": "Harley Lara",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/harleylara/tello-js/issues"
+  },
+  "homepage": "https://github.com/harleylara/tello-js",
+  "dependencies": {
+    "stack-trace": "^1.0.0-pre1",
+    "ws": "^8.6.0"
+  }
+}

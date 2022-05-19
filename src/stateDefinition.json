@@ -1,0 +1,113 @@
+{
+    "mid": {
+        "description": "the detected mission pad ID. If the mission pad detection function is not enabled, -2 is returned. If the detection function is enabled but no mission pad is detected, -1 is returned.",
+        "mapTo": "padID",
+        "unit": "int"
+    },
+    "x": {
+        "description": "the x-axis coordinate of the drone relative to the detected mission pad, in centimeters. If the mission pad detection function is not enabled, -200 is returned. If the detection function is enabled but no mission pad is detected, -100 is returned.",
+        "mapTo": "padX",
+        "unit": "cm"
+    },
+    "y": {
+        "description": "the y-axis coordinate of the drone relative to the detected mission pad, in centimeters. If the mission pad detection function is not enabled, -200 is returned. If the detection function is enabled but no mission pad is detected, -100 is returned.",
+        "mapTo": "padY",
+        "unit": "cm"
+    },
+    "z": {
+        "description": "the z-axis coordinate of the drone relative to the detected mission pad, in centimeters. If the mission pad detection function is not enabled, -200 is returned. If the detection function is enabled but no mission pad is detected, -100 is returned.",
+        "mapTo": "padZ",
+        "unit": "cm"
+    },
+    "mpry": {
+        "description": "Pitch, yaw and roll angles (in degrees) of the drone in the mission pad. If no mission pad is detected, 0 is returned.",
+        "mapTo": "padOrientation",
+        "unit": "deg"
+    },
+    "pitch": {
+        "description": "Drone pitch angle",
+        "mapTo": "pitch",
+        "unit": "deg"
+    },
+    "roll": {
+        "description": "Drone roll angle",
+        "mapTo": "roll",
+        "unit": "deg"
+    },
+    "yaw": {
+        "description": "Drone yaw angle",
+        "mapTo": "yaw",
+        "unit": "deg"
+    },
+    "vgx": {
+        "description": "X-axis speed",
+        "mapTo": "velocityX",
+        "unit": "dm/s",
+        "unitMapTo": "m/s"
+    },
+    "vgy": {
+        "description": "Y-axis speed",
+        "mapTo": "velocityY",
+        "unit": "dm/s",
+        "unitMapTo": "m/s"
+    },
+    "vgz": {
+        "description": "Z-axis speed",
+        "mapTo": "velocityZ",
+        "unit": "dm/s",
+        "unitMapTo": "m/s"
+    },
+    "templ": {
+        "description": "The minimum temperature of the main board",
+        "mapTo": "minTemperature",
+        "unit": "celsius"
+    },
+    "temph": {
+        "description": "The maximum temperature of the main board",
+        "mapTo": "maxTemperature",
+        "unit": "celsius"
+    },
+    "tof": {
+        "description": "Distance measured with the ToF sensor (time of flight)",
+        "mapTo": "distanceToF",
+        "unit": "cm"
+    },
+    "h": {
+        "description": "Height relative to take-off point",
+        "mapTo": "distanceFromTakeOff",
+        "unit": "cm"
+    },
+    "bat": {
+        "description": "Percentage of current remaining battery capacity",
+        "mapTo": "battery",
+        "unit": "percentage"
+    },
+    "baro": {
+        "description": "Height detected by barometer",
+        "mapTo": "barometer",
+        "unit": "m"
+    },
+    "time": {
+        "description": "Motors running time",
+        "mapTo": "flightTime",
+        "unit": "s"
+    },
+    "agx": {
+        "description": "X-axis acceleration",
+        "mapTo": "accX",
+        "unit": "cm/s2",
+        "unitMapTo": "m/s2"
+    },
+    "agy": {
+        "description": " Y-axis acceleration",
+        "mapTo": "accY",
+        "unit": "cm/s2",
+        "unitMapTo": "m/s2"
+    },
+    "agz": {
+        "description": "Z-axis acceleration",
+        "mapTo": "accZ",
+        "unit": "cm/s2",
+        "unitMapTo": "m/s2"
+    }
+}
