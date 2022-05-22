@@ -18,8 +18,10 @@ class wsServer {
 
             ws.on("message", (msg) => {
                 console.log(`Client sent: ${msg}`);
-                const response = msg.toString().trim();
-                switch (response) {
+                const fullMsg = msg.toString().trim().replace(';', ' ');
+                const command = fullMsg.split(' ')[0];
+                console.log(`El comando es ${command}`);
+                switch (command) {
                     case "takeoff":
                         ws.send("taking off");
                         this.drone.sendCmd("takeoff");
@@ -27,6 +29,9 @@ class wsServer {
                     case "land":
                         ws.send("landing");
                         this.drone.sendCmd("land");
+                        break;
+                    case "raw":
+                        this.drone.sendCmd(fullMsg);
                         break;
                     case "flip":
                         ws.send("flipping");

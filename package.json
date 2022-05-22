@@ -3,7 +3,6 @@
   "version": "1.0.3",
   "description": "Javascript library to program Tello Drones.",
   "main": "./src/index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

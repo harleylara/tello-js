@@ -10,6 +10,9 @@
 
 - Documentation Updates:
 
+### 2022-05-22
+
+- Init server file for websocket use...
 
 ### 2022-05-19
 
