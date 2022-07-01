@@ -8,8 +8,26 @@ class wsServer {
         this.CONTROL_SERVER_PORT = serverConfig["controlServer"]["port"] || 3000;
         this.wss = new WebSocket.Server({ host: this.CONTROL_SERVER_IP, port: this.CONTROL_SERVER_PORT });
         this.drone = DroneObj;
+        this.command_dict={
+            "takeoff":"takeoff",
+            "land":"land",
+            "flip f":"flip f",
+            "flip b":"flip b",
+            "flip l":"flip l",
+            "flip r":"flip r",
+            "move left":"left 20",
+            "move right":"right 20",
+            "move forward":"forward 20",
+            "move backward":"back 20",
+            "move up":"up 20",
+            "move down":"down 20",
+            "rotate left":"ccw 20",
+            "rotate right":"cw 20",
+        }
         this.initWsServer();
     }
+
+
 
     initWsServer() {
 
@@ -18,25 +36,29 @@ class wsServer {
 
             ws.on("message", (msg) => {
                 console.log(`Client sent: ${msg}`);
-                const fullMsg = msg.toString().trim().replace(';', ' ');
-                const command = fullMsg.split(' ')[0];
-                console.log(`El comando es ${command}`);
-                switch (command) {
-                    case "takeoff":
-                        ws.send("taking off");
-                        this.drone.sendCmd("takeoff");
+                const message = msg.toString().trim();
+                if (message.startsWith("control")){
+                    ws.send(message.substring(8));
+                    this.drone.sendCmd(this.command_dict[message.substring(8)]);
+                }
+                else
+
+                switch (message) {
+                    // case "takeoff":
+                    //     ws.send("taking off");
+                    //     this.drone.sendCmd("takeoff");
+                    //     break;
+                    // case "land":
+                    //     ws.send("landing");
+                    //     this.drone.sendCmd("land");
+                        // break;
+                    case "streamon":
+                        this.drone.initFfmpeg();
                         break;
-                    case "land":
-                        ws.send("landing");
-                        this.drone.sendCmd("land");
-                        break;
-                    case "raw":
-                        this.drone.sendCmd(fullMsg);
-                        break;
-                    case "flip":
-                        ws.send("flipping");
-                        this.drone.sendCmd("flip f");
-                        break;
+                    // case "flip":
+                    //         ws.send("flipping");
+                    //         this.drone.sendCmd("flip f");
+                    //         break;
                     case "state":
                         ws.send(JSON.stringify(this.drone.getState()));
                         break;

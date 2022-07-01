@@ -1,7 +1,7 @@
 {
     "host": "0.0.0.0",
     "drone": {
-        "ip": "192.168.10.1",
+        "ip": "10.180.100.106",
         "controlPort": 8889,
         "statePort": 8890,
         "videoPort": 11111
