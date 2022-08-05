@@ -33,9 +33,9 @@ class wsServer {
                     case "raw":
                         this.drone.sendCmd(fullMsg);
                         break;
-                    case "flip":
-                        ws.send("flipping");
-                        this.drone.sendCmd("flip f");
+                    case "emergency":
+                        ws.send("EMERGENCY something went wrong!!");
+                        this.drone.sendCmd("emergency");
                         break;
                     case "state":
                         ws.send(JSON.stringify(this.drone.getState()));
