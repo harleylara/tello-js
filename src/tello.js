@@ -1,5 +1,6 @@
 const dgram = require('dgram');
 const webSocket = require('ws');
+const pathToFfmpeg = require('ffmpeg-static');
 const child_process = require('child_process');
 const stateDefinition = require('./stateDefinition.json');
 const droneConfig = require('../drone.json');
@@ -223,7 +224,7 @@ class Tello {
      */
     initFfmpeg() {
         let videoPipe = {
-            "command": "ffmpeg",
+            "command": pathToFfmpeg,
             "args": [
                 '-re',
                 '-y',
@@ -232,6 +233,7 @@ class Tello {
                 '-s', '960x720',
                 '-b', '800k',
                 '-preset', 'ultrafast',
+                '-tune', 'zerolatency',
                 '-f', 'mjpeg',
                 'pipe:1'
             ]
