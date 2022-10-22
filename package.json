@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/harleylara/tello-js",
   "dependencies": {
+    "ffmpeg-static": "^5.1.0",
     "ws": "^8.6.0"
   }
 }
