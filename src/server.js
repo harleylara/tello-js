@@ -6,6 +6,8 @@ class wsServer {
     constructor(DroneObj) {
         this.CONTROL_SERVER_IP = serverConfig["controlServer"]["ip"] || "0.0.0.0";
         this.CONTROL_SERVER_PORT = serverConfig["controlServer"]["port"] || 3000;
+
+        // TODO: Check if the default port is in use and change to port++
         this.wss = new WebSocket.Server({ host: this.CONTROL_SERVER_IP, port: this.CONTROL_SERVER_PORT });
         this.drone = DroneObj;
         this.initWsServer();
@@ -14,6 +16,7 @@ class wsServer {
     initWsServer() {
 
         this.wss.on("connection", (ws) => {
+            // TODO: create a list of clients ????
             console.log("New client connected to control socket");
 
             ws.on("message", (msg) => {
