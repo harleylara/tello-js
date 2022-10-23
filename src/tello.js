@@ -4,6 +4,7 @@ const pathToFfmpeg = require('ffmpeg-static');
 const child_process = require('child_process');
 const stateDefinition = require('./stateDefinition.json');
 const droneConfig = require('../drone.json');
+const logger = require('./logger.js');
 
 class Tello {
     /**
@@ -13,9 +14,6 @@ class Tello {
      * @param {Number} state_port UDP port to receive drone state
      */
     constructor() {
-
-        // TODO: Set the option to Initialize video server
-        // TODO: Set video server by default off
 
         // Control commands UDP Client
         this.controlClient = dgram.createSocket("udp4");
@@ -44,7 +42,7 @@ class Tello {
     initControlClient() {
         this.controlClient.on("message", (msg, rinfo) => {
             const response = msg.toString();
-            console.log(`Drone response: ${response} from ${rinfo.address}:${rinfo.port}`);
+            logger.info(`Drone response: ${response} from ${rinfo.address}:${rinfo.port}`);
 
             if (response === "ok") {
                 this.executing = false;
@@ -53,13 +51,13 @@ class Tello {
 
         this.controlClient.on('error', (error) => {
             if (error) {
-                console.log(error);
+                logger.error(error);
                 this.controlClient.close();
             }
         });
 
         this.controlClient.on("listening", () => {
-            console.log("established connection.");
+            logger.success("established connection.");
         });
     }
 
@@ -75,12 +73,12 @@ class Tello {
 
         this.stateServer.on('error', (error) => {
             if (error) {
-                console.log(error);
+                logger.error(error);
             }
         });
 
         this.stateServer.on("listening", () => {
-            console.log("State Server: established connection.");
+            logger.success("State Server: established connection.");
         });
     }
 
@@ -100,7 +98,7 @@ class Tello {
                 });
             });
         });
-        console.log(`Video Socket Server started on ${this.VIDEO_SOCKET_IP}:${this.VIDEO_SOCKET_PORT}`);
+        logger.success(`Video Socket Server started on ${this.VIDEO_SOCKET_IP}:${this.VIDEO_SOCKET_PORT}`);
     }
 
     /*
@@ -125,9 +123,9 @@ class Tello {
 
             this.controlClient.send(msg, 0, msg.length, this.CONTROL_PORT, this.TELLO_IP, (error) => {
                 if (error) {
-                    console.log("Error sending comand...");
+                    logger.error("Error sending comand...");
                 } else {
-                    console.log(`Command "${cmd}" sent to ${this.TELLO_IP}:${this.CONTROL_PORT}`);
+                    logger.info(`Command "${cmd}" sent to ${this.TELLO_IP}:${this.CONTROL_PORT}`);
                     resolve(this);
                 }
             })
@@ -162,12 +160,12 @@ class Tello {
 
         this.executing = true;
         const msg = Buffer.from('command');
-        console.log(`Connecting to ${this.TELLO_IP} on port ${this.CONTROL_PORT}`);
+        logger.info(`Connecting to ${this.TELLO_IP} on port ${this.CONTROL_PORT}`);
         this.controlClient.send(msg, 0, msg.length, this.CONTROL_PORT, this.TELLO_IP, (error) => {
             if (error) {
-                console.error(`Failed to send message "${msg}" to ${this.TELLO_IP} on port ${this.CONTROL_PORT}: ${error}`);
+                logger.error(`Failed to send message "${msg}" to ${this.TELLO_IP} on port ${this.CONTROL_PORT}: ${error}`);
             } else {
-                console.log("'command' sent");
+                logger.info("'command' sent");
             }
         })
     }
@@ -246,12 +244,12 @@ class Tello {
         });
 
         this.ffmpegProcess.on('close', (code) => {
-            console.log(`ffmpeg exited with code ${code}`);
+            logger.error(`ffmpeg exited with code ${code}`);
         });
 
         this.ffmpegProcess.on('spawn', () => {
             this.ffmpegRunning = true;
-            console.log(`Ffmpeg spawned succesfully`);
+            logger.success(`Ffmpeg spawned succesfully`);
         });
 
         this.ffmpegProcess.stderr.on('data', (data) => {
