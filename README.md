@@ -8,9 +8,6 @@ Javascript library to program Tello Drones.
 
 ℹ️ To use this library you need to install:
 - [Node.js](https://nodejs.org/)
-- [Ffmpeg](https://ffmpeg.org/download.html)
-
-If you already have both software follow the steps below.
 
 1. Download/clone this repository on your computer.
 ```
