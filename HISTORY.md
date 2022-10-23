@@ -10,6 +10,11 @@
 
 - Documentation Updates:
 
+## 2022-10-23
+
+- Logger module added to `tello.js`
+- Ffmpeg is now automatically installed when the `npm install` command is executed.
+
 ### 2022-05-22
 
 - Init server file for websocket use...
