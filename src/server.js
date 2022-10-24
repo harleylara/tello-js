@@ -21,7 +21,7 @@ class wsServer {
 
             ws.on("message", (msg) => {
                 console.log(`Client sent: ${msg}`);
-                const fullMsg = msg.toString().trim().replace(';', ' ');
+                const fullMsg = msg.toString().trim().replaceAll(';', ' ');
                 const command = fullMsg.split(' ')[0];
                 console.log(`Full message: ${fullMsg}`)
                 console.log(`Type of command: ${command}`);
@@ -35,7 +35,7 @@ class wsServer {
                         this.drone.sendCmd("land");
                         break;
                     case "raw":
-                        this.drone.sendCmd(fullMsg.split(' ')[1]);
+                        this.drone.sendCmd(fullMsg.replace("raw ", ""));
                         break;
                     case "emergency":
                         ws.send("EMERGENCY something went wrong!!");
