@@ -32,7 +32,8 @@ class Tello {
         this.frame; // video frame
 
         this.connected = false;
-        this.executing = false;
+        this.timeout = 100;
+        //this.executing = false;
 
     }
 
@@ -44,8 +45,9 @@ class Tello {
             const response = msg.toString();
             logger.info(`Drone response: ${response} from ${rinfo.address}:${rinfo.port}`);
 
-            if (response === "ok") {
-                this.executing = false;
+            if (!this.connected && response == 'ok') {
+                // Initial connection
+                this.connected = true;
             }
         });
 
@@ -57,7 +59,7 @@ class Tello {
         });
 
         this.controlClient.on("listening", () => {
-            logger.success("established connection.");
+            logger.info("Control Client Up and listening");
         });
     }
 
@@ -78,7 +80,7 @@ class Tello {
         });
 
         this.stateServer.on("listening", () => {
-            logger.success("State Server: established connection.");
+            logger.info("State Server Up and listening.");
         });
     }
 
@@ -98,7 +100,7 @@ class Tello {
                 });
             });
         });
-        logger.success(`Video Socket Server started on ${this.VIDEO_SOCKET_IP}:${this.VIDEO_SOCKET_PORT}`);
+        logger.info(`Video Socket Server started on ${this.VIDEO_SOCKET_IP}:${this.VIDEO_SOCKET_PORT}`);
     }
 
     /*
@@ -139,7 +141,7 @@ class Tello {
     * @param {state_port} port used to pull drone state variables
     * @param {video_port} video streaming port from Tello drone
     */
-    connect(tello_ip, control_port, state_port, video_port) {
+    async connect(tello_ip, control_port, state_port, video_port) {
         this.HOST = droneConfig["host"] || "0.0.0.0";
         this.TELLO_IP = tello_ip || droneConfig["drone"]["ip"] || "192.168.10.1";
         this.CONTROL_PORT = control_port || droneConfig["drone"]["controlPort"] || 8889;
@@ -158,16 +160,24 @@ class Tello {
         this.videoSocket = new webSocket.Server({ host: this.VIDEO_SOCKET_IP, port: this.VIDEO_SOCKET_PORT });
         this.initVideoSocket();
 
-        this.executing = true;
         const msg = Buffer.from('command');
         logger.info(`Connecting to ${this.TELLO_IP} on port ${this.CONTROL_PORT}`);
-        this.controlClient.send(msg, 0, msg.length, this.CONTROL_PORT, this.TELLO_IP, (error) => {
-            if (error) {
-                logger.error(`Failed to send message "${msg}" to ${this.TELLO_IP} on port ${this.CONTROL_PORT}: ${error}`);
-            } else {
-                logger.info("'command' sent");
+
+        let attempts = 0;
+        while (attempts < 100) {
+            
+            await this.sendCmd(msg);
+            await this.wait(this.timeout);
+
+            if (this.connected){
+                logger.success(`Connection succesfully with drone ${this.TELLO_IP}`)
+                break
             }
-        })
+            else {
+                logger.error(`Fail to connect. retrying in ${this.timeout} ms...`)
+                attempts++;
+            }
+        }
     }
 
     /**
