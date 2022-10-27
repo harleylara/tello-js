@@ -1,7 +1,7 @@
 {
   "name": "@harleylara/tello-js",
-  "version": "1.0.3",
-  "description": "Javascript library to program Tello Drones.",
+  "version": "1.0.4",
+  "description": "A minimalist Javascript library for programming Tello drones.",
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
