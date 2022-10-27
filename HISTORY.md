@@ -10,7 +10,11 @@
 
 - Documentation Updates:
 
-## 2022-10-23
+### 2022-10-28
+
+- A more reliable connection mechanism was implemented. Resends the connection command after a time without response.
+
+### 2022-10-23
 
 - Logger module added to `tello.js`
 - Ffmpeg is now automatically installed when the `npm install` command is executed.
