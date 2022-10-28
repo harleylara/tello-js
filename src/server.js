@@ -17,6 +17,7 @@ class wsServer {
 
         this.wss.on("connection", (ws) => {
             // TODO: create a list of clients ????
+            // TODO: Allow only one client for connection ??
             console.log("New client connected to control socket");
 
             ws.on("message", (msg) => {
@@ -34,9 +35,6 @@ class wsServer {
                         ws.send("landing");
                         this.drone.sendCmd("land");
                         break;
-                    case "raw":
-                        this.drone.sendCmd(fullMsg.replace("raw ", ""));
-                        break;
                     case "emergency":
                         ws.send("EMERGENCY something went wrong!!");
                         this.drone.sendCmd("emergency");
@@ -45,7 +43,10 @@ class wsServer {
                         ws.send(JSON.stringify(this.drone.getState()));
                         break;
                     default:
-                        ws.send('default')
+                        // assume you are sending raw commands
+                        // from the SDK
+                        ws.send(`sending command: ${fullMsg}`)
+                        this.drone.sendCmd(fullMsg);
                 }
             })
 
