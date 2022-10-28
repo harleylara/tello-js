@@ -13,6 +13,7 @@
 ### 2022-10-28
 
 - A more reliable connection mechanism was implemented. Resends the connection command after a time without response.
+- **BREAKING CHANGE**: `raw` keyword before a command string ex. `raw flip b` was removed. Now you can send SDK commands without `raw` in the begining of a string command ex. `flip b`
 
 ### 2022-10-23
 
