@@ -10,6 +10,10 @@
 
 - Documentation Updates:
 
+### 2022-10-29
+
+- The `drone.json` and `server.json` were deleted and their contents combined into `config.json`.
+
 ### 2022-10-28
 
 - A more reliable connection mechanism was implemented. Resends the connection command after a time without response.

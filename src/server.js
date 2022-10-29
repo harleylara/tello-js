@@ -1,11 +1,11 @@
 const WebSocket = require('ws');
-const serverConfig = require('../server.json');
+const configs = require('../config.json');
 
 class wsServer {
 
     constructor(DroneObj) {
-        this.CONTROL_SERVER_IP = serverConfig["controlServer"]["ip"] || "0.0.0.0";
-        this.CONTROL_SERVER_PORT = serverConfig["controlServer"]["port"] || 3000;
+        this.CONTROL_SERVER_IP = configs["controlServer"]["ip"] || "0.0.0.0";
+        this.CONTROL_SERVER_PORT = configs["controlServer"]["port"] || 3000;
 
         // TODO: Check if the default port is in use and change to port++
         this.wss = new WebSocket.Server({ host: this.CONTROL_SERVER_IP, port: this.CONTROL_SERVER_PORT });

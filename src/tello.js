@@ -3,7 +3,7 @@ const webSocket = require('ws');
 const pathToFfmpeg = require('ffmpeg-static');
 const child_process = require('child_process');
 const stateDefinition = require('./stateDefinition.json');
-const droneConfig = require('../drone.json');
+const configs = require('../config.json');
 const logger = require('./logger.js');
 
 class Tello {
@@ -32,7 +32,8 @@ class Tello {
         this.frame; // video frame
 
         this.connected = false;
-        this.timeout = 100;
+        this.timeout = 500; // milliseconds
+        this.max_time = 10 // seconds
         //this.executing = false;
 
     }
@@ -142,11 +143,11 @@ class Tello {
     * @param {video_port} video streaming port from Tello drone
     */
     async connect(tello_ip, control_port, state_port, video_port) {
-        this.HOST = droneConfig["host"] || "0.0.0.0";
-        this.TELLO_IP = tello_ip || droneConfig["drone"]["ip"] || "192.168.10.1";
-        this.CONTROL_PORT = control_port || droneConfig["drone"]["controlPort"] || 8889;
-        this.STATE_PORT = state_port || droneConfig["drone"]["statePort"] || 8890;
-        this.VIDEO_PORT = video_port || droneConfig["drone"]["videoPort"] || 11111;
+        this.HOST = configs["host"] || "0.0.0.0";
+        this.TELLO_IP = tello_ip || configs["drone"]["ip"] || "192.168.10.1";
+        this.CONTROL_PORT = control_port || configs["drone"]["controlPort"] || 8889;
+        this.STATE_PORT = state_port || configs["drone"]["statePort"] || 8890;
+        this.VIDEO_PORT = video_port || configs["drone"]["videoPort"] || 11111;
 
         this.controlClient.bind(this.CONTROL_PORT);
         this.initControlClient();
@@ -155,8 +156,8 @@ class Tello {
         this.initStateServer();
 
         // Video Socket
-        this.VIDEO_SOCKET_IP = droneConfig["videoServer"]["ip"] || "0.0.0.0"
-        this.VIDEO_SOCKET_PORT = droneConfig["videoServer"]["port"] || 3001
+        this.VIDEO_SOCKET_IP = configs["videoServer"]["ip"] || "0.0.0.0"
+        this.VIDEO_SOCKET_PORT = configs["videoServer"]["port"] || 3001
         this.videoSocket = new webSocket.Server({ host: this.VIDEO_SOCKET_IP, port: this.VIDEO_SOCKET_PORT });
         this.initVideoSocket();
 
@@ -164,7 +165,7 @@ class Tello {
         logger.info(`Connecting to ${this.TELLO_IP} on port ${this.CONTROL_PORT}`);
 
         let attempts = 0;
-        while (attempts < 100) {
+        while (attempts < Math.round((this.max_time*1000)/this.timeout)) {
             
             await this.sendCmd(msg);
             await this.wait(this.timeout);
@@ -231,6 +232,7 @@ class Tello {
      * Initialize Ffmpeg process to read UDP video stream from drone
      */
     initFfmpeg() {
+
         let videoPipe = {
             "command": pathToFfmpeg,
             "args": [
@@ -247,6 +249,7 @@ class Tello {
             ]
         }
 
+        //TODO: before spawn check if the "streamon" command was already send
         this.ffmpegProcess = child_process.spawn(videoPipe['command'], videoPipe['args']);
 
         this.ffmpegProcess.on('error', (error) => {
