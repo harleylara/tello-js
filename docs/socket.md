@@ -7,19 +7,19 @@ To send a single command that does not require arguments:
 <COMMAND>
 ```
 
-To send commands that require arguments, add the command at the beginning and separate the arguments by `;`:
+To send commands that require arguments, add the command at the beginning and separate the arguments by space ` `:
 ```
-<COMAND>;<ARG1>;<ARG2>;<ARG3>
+<COMAND> <ARG1> <ARG2> <ARG3>
 ```
 
 It is also possible to send **raw commands** based on the format used by the SDK. For example to move the drone forward using `rc roll pitch throttle yaw`:
 ```
-rc;0;50;0;0
+rc 0 50 0 0
 ```
 
-> ⚠️ The use of **raw commands** is subject to the format used by the SDK.
+> ⚠️ The use of **raw commands** is subject to the format used by the [Tello SDK](https://dl.djicdn.com/downloads/RoboMaster+TT/Tello_SDK_3.0_User_Guide_en.pdf)
 
-For more details on the communication model: [Communication Model](docs/communication.md)
+For more details on the communication model: [Communication Model](./communication.md)
 
 # List of commands
 
