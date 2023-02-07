@@ -3,9 +3,14 @@ const configs = require('../config.json');
 
 class wsServer {
 
-    constructor(DroneObj) {
+    /**
+    * Initialize WebSocket server for send control commands
+    * @param {control_port} port used to send control cmds TO the WebSocket Server
+    *                       NOT to be confused with drone UDP socket port control.
+    */
+    constructor(DroneObj, control_port) {
         this.CONTROL_SERVER_IP = configs["controlServer"]["ip"] || "0.0.0.0";
-        this.CONTROL_SERVER_PORT = configs["controlServer"]["port"] || 3000;
+        this.CONTROL_SERVER_PORT = control_port || configs["controlServer"]["port"] || 3000;
 
         // TODO: Check if the default port is in use and change to port++
         this.wss = new WebSocket.Server({ host: this.CONTROL_SERVER_IP, port: this.CONTROL_SERVER_PORT });
