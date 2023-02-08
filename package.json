@@ -4,7 +4,8 @@
   "description": "A minimalist Javascript library for programming Tello drones.",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tello-server": "node ./src/tello-server.js"
   },
   "repository": {
     "type": "git",
