@@ -22,7 +22,7 @@ class wsServer {
 
         this.wss.on("connection", (ws) => {
             // TODO: create a list of clients ????
-            // TODO: Allow only one client for connection ??
+            // TODO: Allow only one client per connection ??
             console.log("New client connected to control socket");
 
             ws.on("message", (msg) => {
