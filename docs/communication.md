@@ -4,4 +4,4 @@ This library is intended to program the drone using javascript, but it also cont
 
 Due to the nature of the Tello drones that use UDP as communication protocol it is not possible to interact directly from the browser, so the following communication model is used.
 
-![](./communication-diagram.jpg)
+![Communication Diagram](./communication-diagram.jpg)

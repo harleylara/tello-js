@@ -4,7 +4,7 @@
   "description": "A minimalist Javascript library for programming Tello drones.",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "tello": "node ./src/cli.js",
     "tello-server": "node ./src/tello-server.js"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/harleylara/tello-js",
   "dependencies": {
+    "commander": "^10.0.0",
     "ffmpeg-static": "^5.1.0",
     "ws": "^8.6.0"
   }

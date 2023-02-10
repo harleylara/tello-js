@@ -136,13 +136,15 @@ class Tello {
     }
 
     /**
-    * Initialize UDP connection with the Tello drone
+    * Initialize UDP connection with the Tello drone and Video Socket output
     * @param {tello_ip} drone IP
     * @param {control_port} port used to send control cmds
     * @param {state_port} port used to pull drone state variables
     * @param {video_port} video streaming port from Tello drone
+    * @param {video_socket_ip} ip used to expose video frames
+    * @param {video_socket_port} port used to provide video frame from drone
     */
-    async connect(tello_ip, control_port, state_port, video_port) {
+    async connect(tello_ip, control_port, state_port, video_port, video_socket_ip, video_socket_port) {
         this.HOST = configs["host"] || "0.0.0.0";
         this.TELLO_IP = tello_ip || configs["drone"]["ip"] || "192.168.10.1";
         this.CONTROL_PORT = control_port || configs["drone"]["controlPort"] || 8889;
@@ -156,8 +158,8 @@ class Tello {
         this.initStateServer();
 
         // Video Socket
-        this.VIDEO_SOCKET_IP = configs["videoServer"]["ip"] || "0.0.0.0"
-        this.VIDEO_SOCKET_PORT = configs["videoServer"]["port"] || 3001
+        this.VIDEO_SOCKET_IP = video_socket_ip || configs["videoServer"]["ip"] || "0.0.0.0"
+        this.VIDEO_SOCKET_PORT = video_socket_port || configs["videoServer"]["port"] || 3001
         this.videoSocket = new webSocket.Server({ host: this.VIDEO_SOCKET_IP, port: this.VIDEO_SOCKET_PORT });
         this.initVideoSocket();
 
