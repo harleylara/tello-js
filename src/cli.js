@@ -3,9 +3,13 @@ const Tello = require('./tello.js');
 const package = require('../package.json');
 const readline = require('readline');
 
+const drone = new Tello();
+
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
+    prompt: 'cmd > ',
+    terminal: true
 });
 
 /**
@@ -50,8 +54,6 @@ async function start() {
     console.log(`Control socket port: ${options.controlSocketPort}`)
     console.log("-----------------------------------")
 
-    const drone = new Tello();
-
     await drone.connect(
         tello_ip        = options.telloIp,
         control_port    = options.controlPort,
@@ -60,31 +62,31 @@ async function start() {
         video_socket_ip = options.videoSocketIp,
         video_socket_port = options.videoSocketPort
 
-    ).then(() =>{
-        if (drone.connected){
+    )
 
-            drone.sendCmd('streamon');
-            //drone.initFfmpeg();
+    if (drone.connected){
 
-            const server = new wsServer(drone, 
-                control_port = options.controlSocketPort
-            );
+        const server = new wsServer(drone, 
+            control_port = options.controlSocketPort
+        );
 
-            while (true){
-                rl.question("> ", function (input) {
-                    drone.sendCmd(input)
-                    rl.close();
-                });
-            }
+        // drone.sendCmd('streamon');
+        // drone.initFfmpeg();
 
-        } else {
-            console.log("FAIL to connect");
-        }
-    });
+        rl.on("line", cliInput);
+
+    } else {
+        console.log("FAIL to connect");
+    }
+}
 
 
-    // drone.sendCmd('takeoff');
-
+async function cliInput(input){
+    if (input === "exit"){
+        rl.close();
+    }
+    await drone.sendCmd(input);
+    rl.prompt();
 }
 
 async function main() {
