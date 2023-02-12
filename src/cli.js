@@ -77,7 +77,6 @@ async function start() {
         // drone.initFfmpeg();
 
         rl.on("line", cliInput);
-
     } else {
         console.log("FAIL to connect");
     }
@@ -89,7 +88,7 @@ async function cliInput(input){
         rl.close();
     }
     await drone.sendCmd(input);
-    rl.prompt();
+    // rl.prompt();
 }
 
 
@@ -117,12 +116,47 @@ async function setWifi(){
         console.log(`WiFi password: ${password}`);
 
         await drone.sendCmd(`wifi ${ssid} ${password}`);
+        console.log("The drone will automatically reboot in 3s");
         process.exit(0);
 
     } else {
         console.log("FAIL to connected");
         process.exit(1);
     }
+}
+
+async function setAP(){
+    const options = this.opts();
+
+    let ssid = options.ssid;
+    let password = options.password;
+
+    showInfo();
+
+    // await drone.connect();
+
+    if (drone.connected){
+
+        if (options.interactive === undefined){
+            console.log("Set station-mode started in non-interactive")
+        } else {
+            console.log("Set station-mode started in interactive mode")
+            ssid = await ask('Set Access Point SSID: ');
+            password = await ask('Set Access Point password: ');
+        }
+
+        console.log(`Access Point SSID: ${ssid}`);
+        console.log(`Access Point password: ${password}`);
+
+        await drone.sendCmd(`ap ${ssid} ${password}`);
+        console.log("The drone will automatically reboot in 3 seconds");
+        process.exit(0);
+
+    } else {
+        console.log("FAIL to connected");
+        process.exit(1);
+    }
+
 }
 
 async function main() {
@@ -135,24 +169,32 @@ async function main() {
     program
         .command('start')
         .description('Start communication with the tello drone')
-        .option('--drone-ip <type>', 'Tello drone IP address', '192.168.10.1')
-        .option('--control-port <type>', 'Port to send control commands', 8889)
-        .option('--state-port <type>', 'Port to get drone internal state', 8890)
-        .option('--video-port <type>', 'Port to get video frames from drone', 11111)
+        .option('--drone-ip <type>', 'tello drone IP address', '192.168.10.1')
+        .option('--control-port <type>', 'port to send control commands', 8889)
+        .option('--state-port <type>', 'port to get drone internal state', 8890)
+        .option('--video-port <type>', 'port to get video frames from drone', 11111)
         .option('--video-socket-ip <type>', 'IP address serving video frames over websocket', '0.0.0.0')
-        .option('--video-socket-port <type>',  'Port to get video frames over websocket', 3001)
-        .option('--control-socket-port <type>', 'Port to send control commands over websocket', 3000)
+        .option('--video-socket-port <type>',  'port to get video frames over websocket', 3001)
+        .option('--control-socket-port <type>', 'port to send control commands over websocket', 3000)
         .action(start)
 
     program
         .command('set-wifi')
         .description("Set Tello's WiFi network")
-        .option('-s, --ssid <name>', `Name of the drone's wifi network.
+        .option('-s, --ssid <name>', `name of the drone's wifi network.
                             A prefix is always added, TELO-<your ssid>
                             Default 'TELLO-${SSID}'`, SSID)
-        .option('-p, --password <pass>', `Set password to connect drone's wifi. Default ${PASSWORD}`, PASSWORD)
-        .option('-i, --interactive', "Set wifi in interactive mode")
+        .option('-p, --password <pass>', `set password to connect drone's wifi. Default ${PASSWORD}`, PASSWORD)
+        .option('-i, --interactive', "set wifi in interactive mode")
         .action(setWifi)
+
+    program
+        .command('set-ap')
+        .description("Switch Tello to 'station-mode' and connect to the Access Point (AP)")
+        .option('-s, --ssid <name>', `Access Point name`)
+        .option('-p, --password <pass>', `Access Point password`)
+        .option('-i, --interactive', "set station-mode in interactive mode")
+        .action(setAP)
 
     await program.parseAsync(process.argv);
 }
