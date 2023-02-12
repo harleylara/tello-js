@@ -9,7 +9,7 @@ const drone = new Tello();
 * Default settings
 */
 const SSID = 'WIFI'; // station mode
-const PASSWORD = '123456789'; // station
+const PASSWORD = '123456789'; // station mode
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -105,9 +105,9 @@ async function setWifi(){
     if (drone.connected){
 
         if (options.interactive === undefined){
-            console.log("Set WiFi started in non-interactive")
+            console.log("Set WiFi station-mode started in non-interactive")
         } else {
-            console.log("Set WiFi started in interactive mode")
+            console.log("Set WiFi station-mode started in interactive mode")
             ssid = await ask('Set WiFi SSID: ');
             password = await ask('Set password: ');
         }
@@ -138,9 +138,9 @@ async function setAP(){
     if (drone.connected){
 
         if (options.interactive === undefined){
-            console.log("Set station-mode started in non-interactive")
+            console.log("Set access-point-mode started in non-interactive")
         } else {
-            console.log("Set station-mode started in interactive mode")
+            console.log("Set access-point-mode started in interactive mode")
             ssid = await ask('Set Access Point SSID: ');
             password = await ask('Set Access Point password: ');
         }
@@ -180,7 +180,7 @@ async function main() {
 
     program
         .command('set-wifi')
-        .description("Set Tello's WiFi network")
+        .description("Set Tello's WiFi network in station-mode (Tello create a WiFi network)")
         .option('-s, --ssid <name>', `name of the drone's wifi network.
                             A prefix is always added, TELO-<your ssid>
                             Default 'TELLO-${SSID}'`, SSID)
@@ -190,10 +190,10 @@ async function main() {
 
     program
         .command('set-ap')
-        .description("Switch Tello to 'station-mode' and connect to the Access Point (AP)")
+        .description("Switch Tello into Access Point (AP) mode. Tello connect to an external WiFi network")
         .option('-s, --ssid <name>', `Access Point name`)
         .option('-p, --password <pass>', `Access Point password`)
-        .option('-i, --interactive', "set station-mode in interactive mode")
+        .option('-i, --interactive', "set access-point mode in interactive mode")
         .action(setAP)
 
     await program.parseAsync(process.argv);
