@@ -5,46 +5,49 @@ const readline = require('readline');
 
 const drone = new Tello();
 
+/*
+* Default settings
+*/
+const SSID = 'WIFI'; // station mode
+const PASSWORD = '123456789'; // station
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: 'cmd > ',
+    prompt: 'cmd >> ',
     terminal: true
 });
 
-/**
-* Tello Connection arguments
-* Initialize UDP connection with the Tello drone
-* @param {tello_ip} drone IP (INPUT)
-* @param {control_port} port used to send control cmds (INPUT)
-* @param {state_port} port used to pull drone state variables (INPUT)
-* @param {video_port} video streaming port from Tello drone (INPUT)
-* @param {video_socket_ip} ip used to expose video frames (OUPUT)
-* @param {video_socket_port} port used to provide video frame from drone (OUPUT)
-*/
-
-/**
-* Initialize WebSocket server for send control commands
-* @param {control_port} port used to send control cmds TO the WebSocket Server
-*                       NOT to be confused with drone UDP socket port control. (OUPUT)
-*/
-
-// TODO
-
-// CLI commands:
-// command
-// config
-
 const { Command } = require('commander');
+const { connected } = require('process');
 const program = new Command();
 
-async function start() {
-    const options = this.opts();
-
+/*
+* Utility function to show information about the cli
+* TODO?: info about the OS, node version??
+*/
+function showInfo(){
     console.log("-----------------------------------")
     console.log("Tello interactive CLI started");
     console.log(`tello-js version: ${package.version}`);
     console.log("-----------------------------------")
+}
+
+/*
+* Utility function for interactive mode
+* @param {String} question text
+*/
+function ask(questionText) {
+    return new Promise((resolve, reject) => {
+        rl.question(questionText, (input) => resolve(input) );
+    });
+}
+
+async function start() {
+    const options = this.opts();
+
+    showInfo();
+
     console.log(`Drone IP: ${options.droneIp}`);
     console.log(`Control port: ${options.controlPort}`)
     console.log(`State port: ${options.statePort}`)
@@ -89,6 +92,39 @@ async function cliInput(input){
     rl.prompt();
 }
 
+
+async function setWifi(){
+    const options = this.opts();
+
+    let ssid = options.ssid;
+    let password = options.password;
+
+    showInfo();
+
+    await drone.connect();
+
+    if (drone.connected){
+
+        if (options.interactive === undefined){
+            console.log("Set WiFi started in non-interactive")
+        } else {
+            console.log("Set WiFi started in interactive mode")
+            ssid = await ask('Set WiFi SSID: ');
+            password = await ask('Set password: ');
+        }
+
+        console.log(`WiFi SSID: ${ssid}`);
+        console.log(`WiFi password: ${password}`);
+
+        await drone.sendCmd(`wifi ${ssid} ${password}`);
+        process.exit(0);
+
+    } else {
+        console.log("FAIL to connected");
+        process.exit(1);
+    }
+}
+
 async function main() {
   program
     program
@@ -98,6 +134,7 @@ async function main() {
 
     program
         .command('start')
+        .description('Start communication with the tello drone')
         .option('--drone-ip <type>', 'Tello drone IP address', '192.168.10.1')
         .option('--control-port <type>', 'Port to send control commands', 8889)
         .option('--state-port <type>', 'Port to get drone internal state', 8890)
@@ -106,7 +143,18 @@ async function main() {
         .option('--video-socket-port <type>',  'Port to get video frames over websocket', 3001)
         .option('--control-socket-port <type>', 'Port to send control commands over websocket', 3000)
         .action(start)
-  await program.parseAsync(process.argv);
+
+    program
+        .command('set-wifi')
+        .description("Set Tello's WiFi network")
+        .option('-s, --ssid <name>', `Name of the drone's wifi network.
+                            A prefix is always added, TELO-<your ssid>
+                            Default 'TELLO-${SSID}'`, SSID)
+        .option('-p, --password <pass>', `Set password to connect drone's wifi. Default ${PASSWORD}`, PASSWORD)
+        .option('-i, --interactive', "Set wifi in interactive mode")
+        .action(setWifi)
+
+    await program.parseAsync(process.argv);
 }
 
 main();
