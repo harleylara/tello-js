@@ -7,6 +7,10 @@
     "tello": "node ./src/cli.js",
     "tello-server": "node ./src/tello-server.js"
   },
+  "bin": {
+    "tello": "./src/cli.js",
+    "tello-server": "./src/tello-server.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/harleylara/tello-js.git"

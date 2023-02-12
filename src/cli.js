@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const wsServer = require('./server.js');
 const Tello = require('./tello.js');
 const package = require('../package.json');
