@@ -10,6 +10,10 @@
 
 - Documentation Updates:
 
+### 2023-02-12
+
+- CLI added to the library with the command `tello`
+
 ### 2023-02-08
 
 - File to start tello-core and tello-server `server.js` in the root folder was moved to `src` folder an renamed to `tello-server.js`

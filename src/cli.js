@@ -163,20 +163,20 @@ async function setAP(){
 async function main() {
   program
     program
-        .name('tello-core')
+        .name('tello')
         .description('CLI to manage Tello drone')
         .version(package.version);
 
     program
         .command('start')
         .description('Start communication with the tello drone')
-        .option('--drone-ip <type>', 'tello drone IP address', '192.168.10.1')
-        .option('--control-port <type>', 'port to send control commands', 8889)
-        .option('--state-port <type>', 'port to get drone internal state', 8890)
-        .option('--video-port <type>', 'port to get video frames from drone', 11111)
-        .option('--video-socket-ip <type>', 'IP address serving video frames over websocket', '0.0.0.0')
-        .option('--video-socket-port <type>',  'port to get video frames over websocket', 3001)
-        .option('--control-socket-port <type>', 'port to send control commands over websocket', 3000)
+        .option('--drone-ip <address>', 'tello drone IP address', '192.168.10.1')
+        .option('--control-port <number>', 'port to send control commands', 8889)
+        .option('--state-port <number>', 'port to get drone internal state', 8890)
+        .option('--video-port <number>', 'port to get video frames from drone', 11111)
+        .option('--video-socket-ip <address>', 'IP address serving video frames over websocket', '0.0.0.0')
+        .option('--video-socket-port <number>',  'port to get video frames over websocket', 3001)
+        .option('--control-socket-port <number>', 'port to send control commands over websocket', 3000)
         .action(start)
 
     program
