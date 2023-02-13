@@ -175,8 +175,8 @@ async function main() {
         .option('--state-port <number>', 'port to get drone internal state', 8890)
         .option('--video-port <number>', 'port to get video frames from drone', 11111)
         .option('--video-socket-ip <address>', 'IP address serving video frames over websocket', '0.0.0.0')
-        .option('--video-socket-port <number>',  'port to get video frames over websocket', 3001)
-        .option('--control-socket-port <number>', 'port to send control commands over websocket', 3000)
+        .option('--video-socket-port <number>',  'port to get video frames over websocket', 3000)
+        .option('--control-socket-port <number>', 'port to send control commands over websocket', 3001)
         .action(start)
 
     program
