@@ -1,6 +1,6 @@
 {
   "name": "@harleylara/tello-js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A minimalist Javascript library for programming Tello drones.",
   "main": "./src/index.js",
   "scripts": {
