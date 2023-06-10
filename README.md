@@ -39,6 +39,10 @@ $ npm install -g .
 
 ## Option 2: install using npm
 
+[Video Demo](https://github.com/harleylara/tello-js/assets/35354399/46b0ccc8-c98a-4667-baf0-3b532d9c6eeb)
+
+
+
 1. Open a terminal and run.
 
 ```console
