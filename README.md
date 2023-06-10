@@ -24,13 +24,13 @@ A minimalist Javascript library for programming Tello drones with a WebSocket in
 - [Node.js](https://nodejs.org/)
 
 1. Download/clone this repository on your computer.
-```
-git clone https://github.com/harleylara/tello-js
+```console
+$ git clone https://github.com/harleylara/tello-js
 ```
 
 2. In the **root directory** of **this** project execute.
-```
-npm install -g .
+```console
+$ npm install -g .
 ```
 
 Done. At this point you are ready to have fun with your drone using javascript.
@@ -38,7 +38,7 @@ Done. At this point you are ready to have fun with your drone using javascript.
 # How to use
 
 Basic usage:
-```
+```js
 const Tello = require('tello.js')
 
 const drone = Tello();
@@ -82,7 +82,7 @@ This package contain two cli tools to manage the tello drone:
 ##  `tello` command
 
 To get help on how to use this command:
-```
+```console
 $ tello help
 
 Usage: tello [options] [command]
@@ -103,13 +103,13 @@ Commands:
 
 The command `tello start` launch tello-js in interactive mode, this allows you to send ℹ️ **RAW commands** ℹ️ to the drone directly from the terminal (commands from the SDK see [list of commands](./docs/socket.md#list-of-commands))
 
-```
+```console
 $ tello start
 ```
 
 To get documentation about to set flags use the command `help` before `start`
 
-```
+```console
 $ tello help start
 
 Usage: tello start [options]
@@ -128,7 +128,7 @@ Options:
 ```
 
 E.g. to launch `tello` with an especific IP address:
-```
+```sconsoleh
 $ tello start --drone-ip 192.168.1.10
 ```
 
@@ -136,17 +136,17 @@ $ tello start --drone-ip 192.168.1.10
 
 The command `tello set-wifi` helps to setup drone's WiFi network in **station-mode**. ℹ️ Use the `-i` flag to do it interactively, the command terminal will ask for the name you want to give to the network and the password to be set.
 
-```
+```console
 $ tello set-wifi -i
 ```
 
 You can also configure the wifi in non-interactive mode using the appropriate flags.
-```
+```console
 $ tello set-wifi -s NETWORK_NAME -p 123456789
 ```
 
 To get documentation about to set flags user the command `help` before `set-wifi`
-```
+```console
 $ tello help set-wifi
 
 Usage: tello set-wifi [options]
@@ -167,12 +167,12 @@ Options:
 
 The `tello set-ap` command does a similar job to `tello set-ap` but sets the drone's network into `access point mode`.
 
-```
+```console
 $ tello set-ap -s TELLO-HOTSPOD -p 123456789
 ```
 
 To get more informacion:
-```
+```console
 $ tello help set-ap
 
 Usage: tello set-ap [options]
