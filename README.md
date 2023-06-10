@@ -52,13 +52,13 @@ drone.disconnect();
 
 # List of functions
 
-- async connect(tello_ip: str, control_port: int, state_port: int, video_port: int) {
-- disconnect()
-- getState() returns the latest state of the drone
-- initFfmpeg() harley's note: this should be replaced with a function like `startVideo` that containt `streamon` and `initFfmpeg()`
-- enableStream() for now is just sending the `streamon` command
-- async sendCmd(command: str)
-- async wait(time_ms: int)
+- **async** `connect(tello_ip: str, control_port: int, state_port: int, video_port: int)`
+- `disconnect()`: Close all connections.
+- `getState()` returns the latest state of the drone as a object, check [stateDefinition.json](./src/stateDefinition.json) for more details.
+- `initFfmpeg()` harley's note: this should be replaced with a function like `startVideo` that containt `streamon` and `initFfmpeg()`
+- `enableStream()` for now is just sending the `streamon` command
+- async `sendCmd(command: str)`
+- async `wait(time_ms: int)`
 
 # IP address and ports config
 
