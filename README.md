@@ -23,7 +23,19 @@ A minimalist Javascript library for programming Tello drones with a WebSocket in
 ℹ️  [REQUIREMENT] To use this library you need to install:
 - [Node.js](https://nodejs.org/)
 
-## Option 1: install from source
+## Option 1: install using npm
+
+[Video Demo](https://github.com/harleylara/tello-js/assets/35354399/46b0ccc8-c98a-4667-baf0-3b532d9c6eeb)
+
+1. Open a terminal and run.
+
+```console
+$ npm i @harleylara/tello-js -g
+```
+
+2. Done
+
+## Option 2: install from source
 
 1. Download/clone this repository on your computer.
 ```console
@@ -36,20 +48,6 @@ $ npm install -g .
 ```
 
 3. Done
-
-## Option 2: install using npm
-
-[Video Demo](https://github.com/harleylara/tello-js/assets/35354399/46b0ccc8-c98a-4667-baf0-3b532d9c6eeb)
-
-
-
-1. Open a terminal and run.
-
-```console
-$ npm i @harleylara/tello-js -g
-```
-
-2. Done
 
 At this point you are ready to have fun with your drone using javascript.
 
